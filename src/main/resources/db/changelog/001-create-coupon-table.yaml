@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-coupon-table
+      author: tomas
+      changes:
+        - createTable:
+            tableName: coupon
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: creation_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_usages
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: current_usages
+                  type: int
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_coupon_code
+            tableName: coupon
+            unique: true
+            columns:
+              - column:
+                  name: code

@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-coupon-usage-table
+      author: tomas
+      changes:
+        - createTable:
+            tableName: coupon_usage
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: coupon_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: used_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: coupon_usage
+            columnNames: coupon_id, user_id
+            constraintName: uq_coupon_usage_coupon_user
+        - createIndex:
+            indexName: idx_coupon_usage_coupon_id
+            tableName: coupon_usage
+            columns:
+              - column:
+                  name: coupon_id
